@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .successHandler(new AuthenticationHandler())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user")
+                .antMatchers("/user/repos")
                 .authenticated()
                 .antMatchers("/**")
                 .permitAll()

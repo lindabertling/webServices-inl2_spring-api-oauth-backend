@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fcc2103d.css",
+    "main.js": "/static/js/main.dede1260.js",
+    "index.html": "/index.html",
+    "main.fcc2103d.css.map": "/static/css/main.fcc2103d.css.map",
+    "main.dede1260.js.map": "/static/js/main.dede1260.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fcc2103d.css",
+    "static/js/main.dede1260.js"
+  ]
+}

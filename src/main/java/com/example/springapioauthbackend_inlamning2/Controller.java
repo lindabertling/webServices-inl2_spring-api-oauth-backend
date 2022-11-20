@@ -12,32 +12,30 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @RestController
-//@CrossOrigin
-public class ExampleController {
+public class Controller {
 
-    private final OAuth2AuthorizedClientService oauthService; // Hämtar access tokens
+    private final OAuth2AuthorizedClientService oauthService;
 
     @Autowired
-    public ExampleController(OAuth2AuthorizedClientService oauthService) {
+    public Controller(OAuth2AuthorizedClientService oauthService) {
         this.oauthService = oauthService;
     }
 
     @GetMapping("/user/repos")
     public Mono<String> getRepos(
-            @AuthenticationPrincipal OAuth2User principal, //användaren vi är inne på
-            Authentication auth) { //autentiseringen / inloggningen
-        var oauthToken = (OAuth2AuthenticationToken) auth; // castar till rätt typ av token
-        var client = oauthService.loadAuthorizedClient( //laddar in vår token för att få tillbaka en OAuth2AuthorizedClient
+            @AuthenticationPrincipal OAuth2User principal,
+            Authentication auth) {
+        var oauthToken = (OAuth2AuthenticationToken) auth;
+        var client = oauthService.loadAuthorizedClient(
                 oauthToken.getAuthorizedClientRegistrationId(),
                 oauthToken.getName());
-        System.out.println(client.getAccessToken().getTokenValue()); // hämtar access token med get token value
-//        return principal.getAttributes(); // returnerar all info som finns på användaren
+        var accessToken = client.getAccessToken().getTokenValue();
 
         WebClient webClient = WebClient.create("https://api.github.com/");
 
         return webClient.get()
                 .uri("/user/repos")
-                .header("Authorization", "Bearer " + client.getAccessToken().getTokenValue())
+                .header("Authorization", "Bearer " + accessToken)
                 .retrieve()
                 .bodyToMono(String.class);
     }
